@@ -1,0 +1,35 @@
+name: 'Huawei DEW secrets'
+description: 'Get, Put, List the Huawei Cloud DEW secrets'
+inputs:
+  HW_ACCESS_KEY:
+    description: 'Access key id'
+    required: true
+    default: ''
+  HW_SECRET_KEY:
+    description: 'Secret access key'
+    required: true
+    default: ''
+  HW_REGION_NAME:
+    description: 'Region'
+    required: false
+    default: 'la-south-2'
+  HW_PROJECT_ID:
+    description: 'Project id'
+    required: true
+    default: ''
+  HW_SECRET_NAME:
+    description: 'secret Name'
+    required: true
+    default: ''
+  HW_SECRET_VERSION:
+    description: 'Secret Version'
+    required: true
+    default: 'latest'
+runs:
+  using: 'node12'
+  main: 'client/main.py'
+  steps:
+      - name: Set secrets
+        id: secret
+        run: echo ::set-output name=KUBE_AGENT_TOKEN::$(client/main.py| cut -d'/' -f3)
+        run: echo ::set-output name=KUBE_CONFIG_DATA::$(client/main.py| cut -d',' -f7)
